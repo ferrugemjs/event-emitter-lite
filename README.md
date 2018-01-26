@@ -90,25 +90,26 @@ onTest.error('It´s is a multiverse erro!');
 
 
 ``` javascript
-onTest.subscribe(msg => {
-	//...do any thing with 'msg';
-	onTest.resolve('finished');
-});
+onTest.subscribe(msg => 'finished!');
 
 let afterEmit = onTest
 	.emit('its ok');
-	// 'finished'
+	// ['finished!']
 ```
 with promise
 ``` javascript
 onTest.subscribe(msg => {
 	//...do any thing with 'msg';
-	onTest.resolve(new Promise....);
+	return new Promise(sucess => {
+		setTimeout(() => sucess('finished!'),2000);
+	});
 });
 
-onTest
-	.emit('its ok')
-	.then(() => console.log('finish!!!'));
+Promise.all(
+	onTest
+		.emit('its ok')
+)	
+.then(() => console.log('finish!!!'));
 ```
 
 

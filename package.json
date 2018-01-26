@@ -1,6 +1,6 @@
 {
   "name": "event-emitter-lite",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "simple event emitter to use with typescript and pure javascript no depences",
   "scripts": {
     "del:dist":"node_modules/.bin/del-cli dist",
