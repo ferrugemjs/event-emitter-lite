@@ -39,7 +39,12 @@ onTest.emit('go go go!!!');
 onTest.unsubscribe(egoistSubscribe);
 ```
 
-##### cancel by subscribe
+##### cancel a event
+``` javascript
+onTest.cancel();
+```
+
+##### cancel a subscribe
 ``` javascript
 egoistSubscribe.cancel();
 ```
@@ -79,5 +84,31 @@ onTest.error('It´s is a multiverse erro!');
 
 ```
 
+#### emiting a value (can do a promise) after a emit
+
+
+
+
+``` javascript
+onTest.subscribe(msg => {
+	//...do any thing with 'msg';
+	onTest.resolve('finished');
+});
+
+let afterEmit = onTest
+	.emit('its ok');
+	// 'finished'
+```
+with promise
+``` javascript
+onTest.subscribe(msg => {
+	//...do any thing with 'msg';
+	onTest.resolve(new Promise....);
+});
+
+onTest
+	.emit('its ok')
+	.then(() => console.log('finish!!!'));
+```
 
 

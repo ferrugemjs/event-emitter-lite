@@ -46,3 +46,33 @@ myEvt.subscribe(
 
 myEvt
 	.error(123);
+
+
+//test with done
+
+var evt1 = new evtemitter.EventEmitter();
+
+evt1.subscribe(
+	msg => console.log(`sub1:success --> ${msg}`)
+	,err => console.log(`sub1:error --> ${err}`)
+);
+
+evt1.subscribe(
+	(msg,evt) => {
+		console.time('init1');
+		console.log(`sub2:success --> ${msg}`);
+		//evt.resolve({a:'funciona pow!'});
+		evt.resolve(new Promise((success) =>{
+			setTimeout(() => {
+				success('lets goooo!!!');
+				console.timeEnd('init1');
+			},6000);
+		}));
+	}	
+	,err => console.log(`sub2:error --> ${err}`)
+);
+
+evt1
+	.emit('test with done!!!')
+	.then(msgF => console.log(msgF));
+

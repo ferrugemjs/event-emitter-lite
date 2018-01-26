@@ -41,6 +41,8 @@ export class EventEmitter<T, E = string>{
     private _cancel_next:boolean;
     private _lastvalue:T;
     private config:IConfigEmitter;
+    private _resolveValue:any;
+
 	constructor(config:IConfigEmitter={}){
 	    this.config = config;
         this._next_iterator=0;
@@ -58,14 +60,17 @@ export class EventEmitter<T, E = string>{
             });
         }
     }
-	public emit(value: T):IEventEmitter{
+    public resolve(resolveValue:any):void{
+        this._resolveValue = resolveValue;
+    }
+	public emit(value: T):any{
         let hasCancel:boolean = this._cancel_next;
         if (hasCancel) {
             this._cancel_next = false;            
         }else if(this.hasSubscribers()){
             let _toremove:IEventSubscribe[] = [];
             hasCancel = !this._events.every((_sub:IEventSubscribeExtended) => {                
-                _sub.handlerSucess(value);
+                _sub.handlerSucess(value,this);
                 if(_sub.once){                    
                     _toremove.push({ref:_sub.ref});
                 };
@@ -77,7 +82,10 @@ export class EventEmitter<T, E = string>{
             });            
             _toremove.forEach((_subref)=>this.unsubscribe(_subref));           
         };	
-        this._lastvalue = value;        
+        this._lastvalue = value;
+        if(this._resolveValue){
+            return this._resolveValue;
+        }
         return {
             done:(p_onSuccess:()=>void,p_onError?:(err:IEventEmitterError)=>any)=>{
                 if(!hasCancel){
@@ -97,7 +105,7 @@ export class EventEmitter<T, E = string>{
     private getRefId():string{
         return new Date().getTime() + "#" + this._events.length;
     }
-    public subscribe(handlerSucess:(value:T) => any, handlerError?:(value:E) => any): IEventSubscribe {
+    public subscribe(handlerSucess:(value:T, evtContext:EventEmitter<T,E>) => any, handlerError?:(value:E) => any): IEventSubscribe {
         if(!this._events){
             this._events = [];
         };
@@ -105,7 +113,7 @@ export class EventEmitter<T, E = string>{
         this._events.push({ref,handlerSucess,handlerError});
         return new EventInsc(ref,this);
     }
-    public once(handlerSucess:(value:T) => any, handlerError?:(value:E) => any): IEventSubscribe {
+    public once(handlerSucess:(value:T, evtContext:EventEmitter<T,E>) => any, handlerError?:(value:E) => any): IEventSubscribe {
         if (!this._events) {
             this._events = [];
         };
