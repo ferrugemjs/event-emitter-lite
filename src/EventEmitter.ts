@@ -78,7 +78,7 @@ export class EventEmitter<GEmitType, GErrorType = string, GResolveType = any>{
             });            
             _toremove.forEach(_subref => this.unsubscribe(_subref));           
         };	
-
+	this._lastvalue = value;
         return _resolveValues;
 	}
 	private next(value:GEmitType):void{
