@@ -1,13 +1,15 @@
 {
   "name": "event-emitter-lite",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "simple event emitter to use with typescript and pure javascript no depences",
   "scripts": {
-    "del:dist":"node_modules/.bin/del-cli dist",
+	"copyfiles":"node_modules/.bin/copyfiles",
+    "del:dist": "node_modules/.bin/del-cli dist",
     "compile:commonjs": "node_modules/.bin/tsc --module commonjs  --outDir dist/commonjs",
     "compile:amd": "node_modules/.bin/tsc",
-    "build": "npm run del:dist && npm run compile:amd && npm run compile:commonjs",
-    "test": "npm run del:dist && npm run compile:commonjs && node example/test"
+    "build": "npm run del:dist && npm run compile:amd && npm run compile:commonjs && npm run copy:defs",
+    "test": "npm run del:dist && npm run compile:commonjs && node example/test",
+	"copy:defs":"copyfiles -u 2  dist/commonjs/*.d.ts dist/@types/event-emitter-lite"
   },
   "main": "dist/commonjs/EventEmitter.js",
   "repository": {
@@ -33,6 +35,7 @@
     }
   },
   "devDependencies": {
+    "copyfiles": "^2.0.0",
     "del-cli": "^1.1.0",
     "typescript": "^2.6.2"
   }
