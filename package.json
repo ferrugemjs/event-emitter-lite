@@ -1,6 +1,6 @@
 {
   "name": "event-emitter-lite",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "description": "simple event emitter to use with typescript and pure javascript no depences",
   "scripts": {
 	"copyfiles":"node_modules/.bin/copyfiles",
@@ -11,7 +11,8 @@
     "test": "npm run del:dist && npm run compile:commonjs && node example/test",
 	"copy:defs":"copyfiles -u 2  dist/commonjs/*.d.ts dist/@types/event-emitter-lite"
   },
-  "main": "dist/commonjs/EventEmitter.js",
+  "main": "./dist/commonjs/EventEmitter.js",
+	"types":"./dist/@types/event-emitter-lite/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ferrugemjs/event-emitter-lite.git"
