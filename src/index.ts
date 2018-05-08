@@ -1,3 +1,1 @@
-declare module 'event-emitter-lite'{
-	export * from "EventEmitter";
-}
+export { EventEmitter, IEventSubscribe, IEventEmitterError } from './EventEmitter';
